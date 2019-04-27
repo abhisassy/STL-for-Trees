@@ -9,7 +9,11 @@ using namespace std;
 #include <string>
 #include <string.h>
 
-
+struct default_pred{
+    bool operator()(){
+        return true; // dunno what exactly to do here ; if deafult is binary tree ,retrun true always ?
+    }
+};
 
 //eg tree < int,vector<int>,my_pred> , where my_pred is a struct/class and has operator() overidden
 
@@ -41,14 +45,14 @@ class tree{
         T_datatype *it_ptr;
 
         public:
-        explicit Iterator(T_datatype *p =nullptr){  
+        explicit Iterator(T_datatype *p = nullptr){  
             it_ptr = p;
         }
 
-        bool operator==(const Iteratot& rhs) const{
+        bool operator==(const Iterator& rhs) const{
             return is_eqaul(*it_ptr,*rhs.it_ptr);     // is_equal() should again be a generic function 
         }
-        bool operator!=(const Iteratot& rhs) const){
+        bool operator!=(const Iterator& rhs) const{
             return !(*this == rhs);
         }
 
@@ -104,11 +108,6 @@ class tree{
 
 };
 
-struct default_pred{
-    bool operator()(tree<> t1, tree<> t2){
-        return true; // dunno what exactly to do here ; if deafult is binary tree ,retrun true always ?
-    }
-};
 
 template<typename ptr_t>
 void disp(ptr_t first, ptr_t last){
