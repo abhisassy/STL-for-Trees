@@ -1,0 +1,32 @@
+                        Generic Programming Project Abstract 
+
+@Abhishek  Saseendran 01FB16ECS018
+@Aishwarya P S        01FB16ECS035
+
+Project Title : Developing STL for Trees 
+
+    Idea of the project is to develop a STL library for Trees
+    -type of trees covered : Binary Trees, BST.
+    -data type inserted into the tree is made generic 
+    -container to be used is made user defined 
+    -define iterators to make it work with existing algorithms 
+    -arrange the elements in the tree based on a binary predicate that is specified by the       	user when he wishes, else a default predicate for ???? will be used
+    -container used is also specified by the user provided it has the required functions.
+    -a few of the functions covered would be 
+        depth of the tree, 
+        number of leaves, 
+        number 	of nodes, 
+        traversals, 
+        inserting and deleting elements, 
+        exists, 
+        find, 
+        listchildren, etc
+
+    Initial scope of the project : 
+        develop code for - Binary Trees,
+        where data type is generic,
+	with user defined predicates,
+        and implement it for the containers : vector , list, deque  
+         
+    
+
