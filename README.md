@@ -1,2 +1,2 @@
-# STL-for-Tress
+# STL-for-Trees
 C++ library for trees
