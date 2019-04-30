@@ -17,7 +17,7 @@ int main(){
     tree1.postorder();
     cout <<"find : "<<tree1.find(6) << "\n";
     cout <<"find : "<<tree1.find(16) << "\n";
-    cout <<"children : ";tree1.children(0);
+    cout <<"children : ";tree1.children(5);
 
     cout << "\nTest Case 2: \ndata type : char , container : vector , default predicate\n";
     tree<char,vector<char>> tree2(5);
@@ -31,7 +31,7 @@ int main(){
     tree2.postorder();
     cout <<"find : "<<tree2.find('d') << "\n";
     cout <<"find : "<<tree2.find('x') << "\n";
-    cout <<"children : ";tree2.children(0);
+    cout <<"children : ";tree2.children('a');
 
     cout << "\nTest Case 3: \ndata type : float , container : vector , default predicate\n";
     tree<float,vector<float>> tree3(5);
@@ -45,7 +45,7 @@ int main(){
     tree3.postorder();
     cout <<"find : "<<tree3.find(2.2) << "\n";
     cout <<"find : "<<tree3.find(16.0) << "\n";
-    cout <<"children : ";tree3.children(0);
+    cout <<"children : ";tree3.children(1.1);
 
     cout << "\nTest Case 4: \ndata type : string , container : vector , default predicate\n";
     tree<string,vector<string>> tree4(5);
@@ -59,7 +59,7 @@ int main(){
     tree4.postorder();
     cout <<"find : "<<tree4.find("abc") << "\n";
     cout <<"find : "<<tree4.find("dd") << "\n";
-    cout <<"children : ";tree4.children(0);
+    cout <<"children : ";tree4.children("abc");
     
     cout << "\nTest Case 5: \ndata type : double , container : vector , default predicate\n";
     tree<double,vector<double>> tree5(5);
@@ -73,7 +73,7 @@ int main(){
     tree5.postorder();
     cout <<"find : "<<tree5.find(1.23232) << "\n";
     cout <<"find : "<<tree5.find(1.2) << "\n";
-    cout <<"children : ";tree5.children(0);
+    cout <<"children : ";tree5.children(123);
 
     
     return 0; 

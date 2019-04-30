@@ -121,8 +121,9 @@ class tree{
     void postorder();
     void insert(T_datatype element);
     void del(T_datatype element); // -pending
-    int  find(T_datatype element);
-    void children(int); // list children. Parameter is the node whose children is to be displayed
+    int  find(T_datatype element); // returns position in container (-1 if otherwise)
+    void children(T_datatype element); // makes more sense , a user would enter element directly to find its children
+    
  
     //can add vector functions like empty resize and all those small small functions
 

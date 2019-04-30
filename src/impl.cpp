@@ -197,35 +197,29 @@ int tree<T_datatype, T_container, T_predicate>::find(T_datatype element){
 		if(root[i]!=*temp)
 			count++;
 		if(element == root[i])
-			return 1;
+			return i;
 		i++;
 	}
-	return 0;
+	return -1;
 }
 
 template< typename T_datatype, typename T_container, typename T_predicate>
-void tree<T_datatype, T_container, T_predicate>::children(int x){
-		
-	int l = left_(x), r = right_(x);
-	int i=0,count=-1;
-	T_datatype *temp = new T_datatype();
-	if(l!=-1 || r!=-1){
-		while(count < size){
-			if(root[i]!=*temp)
-				count++;
-			if(l==count){
-				cout << root[i] << " ";
-				l=-1;
-			}
-			if(r==count){
-				cout << root[i] << " ";
-				r=-1;
-			}
-			i++;	
-		 
-		}
-	if(l!=-1) cout <<"no left child ";
-	if(r!=-1) cout <<"no right child ";
-	cout <<"\n";	
+void tree<T_datatype, T_container, T_predicate>::children(T_datatype element){
+
+	int f = find(element);
+	if(f==-1){
+		cout <<"Element doesnt exist \n";
+		return;
 	}
+			
+	int l = left_(f), r = right_(f);
+	T_datatype *temp = new T_datatype();
+	if(l==-1 && root[l]!=*temp)
+		cout <<"no left child\n";
+	else
+		cout <<"left: "<<root[l]<<"\n";
+	if(r==-1 && root[r]!=*temp)
+		cout <<"no right child\n";
+	else
+		cout <<"right: "<<root[r]<<"\n";	
 }
