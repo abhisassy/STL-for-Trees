@@ -7,17 +7,26 @@ int main(){
     cout << "\nTest Case 1: \ndata type : int , container : vector , default predicate\n";
 
     tree<int,vector<int>> tree1(5);
-    tree1.insert(5);
-    tree1.insert(3);
-    tree1.insert(2);
     tree1.insert(6);
+    tree1.insert(4);
+    tree1.insert(5);
+    tree1.insert(7);
     tree1.insert(8);
+    tree1.insert(9);
     tree1.preorder();
     tree1.inorder();
     tree1.postorder();
-    cout <<"find : "<<tree1.find(6) << "\n";
-    cout <<"find : "<<tree1.find(16) << "\n";
-    cout <<"children : ";tree1.children(5);
+    tree<int,vector<int>>::Iterator it=tree1.find(5);
+    if(it!=tree1.end())
+        cout <<"find : "<< *it << "\n";
+    else
+        cout << "Not found\n";
+    it=tree1.find(16);
+    if(it!=tree1.end())
+        cout <<"find : "<< *it << "\n";
+    else
+        cout << "Not found\n";
+    cout <<"children : ";tree1.children(6);
 
     cout << "\nTest Case 2: \ndata type : char , container : vector , default predicate\n";
     tree<char,vector<char>> tree2(5);
@@ -29,8 +38,16 @@ int main(){
     tree2.preorder();
     tree2.inorder();
     tree2.postorder();
-    cout <<"find : "<<tree2.find('d') << "\n";
-    cout <<"find : "<<tree2.find('x') << "\n";
+    tree<char,vector<char>>::Iterator it2=tree2.find('d');
+    if(it2!=tree2.end())
+        cout <<"find : "<< *it2 << "\n";
+    else
+        cout << "Not found\n";
+    it2=tree2.find('x');
+    if(it2!=tree2.end())
+        cout <<"find : "<< *it2 << "\n";
+    else
+        cout << "Not found\n";
     cout <<"children : ";tree2.children('a');
 
     cout << "\nTest Case 3: \ndata type : float , container : vector , default predicate\n";
@@ -43,8 +60,16 @@ int main(){
     tree3.preorder();
     tree3.inorder();
     tree3.postorder();
-    cout <<"find : "<<tree3.find(2.2) << "\n";
-    cout <<"find : "<<tree3.find(16.0) << "\n";
+    tree<float,vector<float>>::Iterator it3=tree3.find(2.2);
+    if(it3!=tree3.end())
+        cout <<"find : "<< *it3 << "\n";
+    else
+        cout << "Not found\n";
+    it3=tree3.find(16.0);
+    if(it3!=tree3.end())
+        cout <<"find : "<< *it3 << "\n";
+    else
+        cout << "Not found\n";
     cout <<"children : ";tree3.children(1.1);
 
     cout << "\nTest Case 4: \ndata type : string , container : vector , default predicate\n";
@@ -57,8 +82,16 @@ int main(){
     tree4.preorder();
     tree4.inorder();
     tree4.postorder();
-    cout <<"find : "<<tree4.find("abc") << "\n";
-    cout <<"find : "<<tree4.find("dd") << "\n";
+    tree<string,vector<string>>::Iterator it4=tree4.find("abc");
+    if(it4!=tree4.end())
+        cout <<"find : "<< *it4 << "\n";
+    else
+        cout << "Not found\n";
+    it4=tree4.find("dd");
+    if(it4!=tree4.end())
+        cout <<"find : "<< *it4 << "\n";
+    else
+        cout << "Not found\n";
     cout <<"children : ";tree4.children("abc");
     
     cout << "\nTest Case 5: \ndata type : double , container : vector , default predicate\n";
@@ -71,8 +104,16 @@ int main(){
     tree5.preorder();
     tree5.inorder();
     tree5.postorder();
-    cout <<"find : "<<tree5.find(1.23232) << "\n";
-    cout <<"find : "<<tree5.find(1.2) << "\n";
+    tree<double,vector<double>>::Iterator it5=tree5.find(1.23232);
+    if(it5!=tree5.end())
+        cout <<"find : "<< *it5 << "\n";
+    else
+        cout << "Not found\n";
+    it5=tree5.find(1.2);
+    if(it5!=tree5.end())
+        cout <<"find : "<< *it5 << "\n";
+    else
+        cout << "Not found\n";
     cout <<"children : ";tree5.children(123);
 
     

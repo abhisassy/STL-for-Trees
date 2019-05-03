@@ -51,7 +51,10 @@ tree<T_datatype, T_container, T_predicate>::~tree(){
 template< typename T_datatype, typename T_container, typename T_predicate>
 int tree<T_datatype, T_container, T_predicate>::height(){
 //	return(size%2-1); //?? height of binary tree ranges from size-1 to log2(size) no? -- so assuming a full balanced tree h= size/2 +1 
-	return (size/2 + 1); // subject to change later maybe 
+//	return (size/2 + 1); // subject to change later maybe 
+//size was wrongly calculated before
+	return (ceil(log2(size))); 
+//size is the length of container upto the last node entered. So log2 of that should be fine for all trees. Balanced or unbalanced.	
 }
 
 template< typename T_datatype, typename T_container, typename T_predicate>
@@ -83,7 +86,8 @@ void tree<T_datatype, T_container, T_predicate>::insert(T_datatype element){
 		}
 		if(root[i]==*temp){
 			root[i]=element;
-			size++;
+			if(size<i+1)
+				size=i+1;
 			return;
 		}
 		else if(fn(element,root[i])){
@@ -112,28 +116,44 @@ int tree<T_datatype, T_container, T_predicate>::right_(int i){
 template< typename T_datatype, typename T_container, typename T_predicate>
 void tree<T_datatype, T_container, T_predicate>::preorder(){
 	T_datatype *temp = new T_datatype();
-	/*for(Iterator it=begin();it!=end();++it){    // this just failed to work for float , string no idea why   
-		if((*it)!=*temp)						// prob something wrong with our iterator
-			cout << *it << " ";
-	}*/
-	int count =0,i=0;
-	
-	while(count < size){
-		
-		if(root[i]!=*temp){
-			cout << root[i] << " ";
-			count++;
-		}
-		i++;
+	stack<int> st;
+	int l,r;
+	int x;
+	st.push(0);
+	while(!st.empty()){
+		x = st.top();
+		st.pop();
+		cout << root[x] << " ";
+		l=left_(x);
+		r=right_(x);
+		if(r!=-1 && root[r]!=*temp)
+			st.push(r);
+		if(l!=-1 && root[l]!=*temp)
+			st.push(l);
 	}
-	
-	cout << "\n";
 	delete temp;
+	cout << "\n";
+	// T_datatype *temp = new T_datatype();
+	// int i=0;
+	// for(Iterator it=begin();i<size;++it,++i){    // this just failed to work for float , string no idea why   
+	// 	if((*it)!=*temp)						// prob something wrong with our iterator
+	// 		cout << *it << " ";
+	// }
+	// int count =0,i=0;
+	
+	// while(count < size){
+		
+	// 	if(root[i]!=*temp){
+	// 		cout << root[i] << " ";
+	// 		count++;
+	// 	}
+	// 	i++;
+	// }
 }
 
 template< typename T_datatype, typename T_container, typename T_predicate>
 void tree<T_datatype, T_container, T_predicate>::inorder(){
-	stack<int> st; //your pushing only index so why make it generic
+	stack<int> st; //your pushing only index so why make it generic --didnt realise I did that :P
 	int i=0;
 	//st.push(i);
 	int l,r;
@@ -190,29 +210,34 @@ void tree<T_datatype, T_container, T_predicate>::postorder(){
 }
 
 template< typename T_datatype, typename T_container, typename T_predicate>
-int tree<T_datatype, T_container, T_predicate>::find(T_datatype element){
-	int count = 0,i=0;						// note : need to fix iterator and come back and reimplement or we could leave it like this  
-	T_datatype *temp = new T_datatype();
-	while(count < size){
-		if(root[i]!=*temp)
-			count++;
-		if(element == root[i])
-			return i;
-		i++;
-	}
-	return -1;
+typename tree<T_datatype, T_container, T_predicate>::Iterator tree<T_datatype, T_container, T_predicate>::find(T_datatype element){
+	//int count = 0,i=0;						// note : need to fix iterator and come back and reimplement or we could leave it like this  
+	Iterator it=begin();
+	for(;it!=end() && *it!=element;++it){}
+	return it;
+	// while(count < size){
+	// 	if(root[i]!=*temp)
+	// 		count++;
+	// 	if(element == root[i])
+	// 		return i;
+	// 	i++;
+	// }
+	// return -1;
 }
 
 template< typename T_datatype, typename T_container, typename T_predicate>
 void tree<T_datatype, T_container, T_predicate>::children(T_datatype element){
-
-	int f = find(element);
-	if(f==-1){
+	int i=0;
+	for(Iterator it=begin();i<size;++it,++i){
+		if(*it==element)
+			break;
+	}
+	if(i==size){
 		cout <<"Element doesnt exist \n";
 		return;
 	}
 			
-	int l = left_(f), r = right_(f);
+	int l = left_(i), r = right_(i);
 	T_datatype *temp = new T_datatype();
 	if(l==-1 && root[l]!=*temp)
 		cout <<"no left child\n";

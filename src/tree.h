@@ -65,16 +65,18 @@ class tree{
 
     class Iterator{
         private:
-        T_datatype *it_ptr;
+        //T_datatype *it_ptr;
+        typename T_container::iterator it_ptr; //changed the iterator to use the iterator of the container that we're using
 
         public:
-        explicit Iterator(T_datatype *p = nullptr):it_ptr(p){}
+        explicit Iterator(T_datatype *p = nullptr):it_ptr(T_container::iterator(p)){}
+        explicit Iterator(typename T_container::iterator p):it_ptr(p){}
 
         bool operator==(const Iterator& rhs) const{
-            return isequal(*it_ptr,*rhs.it_ptr);     // is_equal() should again be a generic function 
+            return it_ptr==rhs.it_ptr;     // is_equal() should again be a generic function 
         }
         bool operator!=(const Iterator& rhs) const{
-            return !(*this == rhs);
+            return !(it_ptr==rhs.it_ptr);
         }
 
         T_datatype operator*() const{
@@ -106,11 +108,11 @@ class tree{
     };
 
     Iterator begin(){
-        return Iterator(&(*root.begin()));  
+        return Iterator(root.begin());  
     }
 
     Iterator end(){
-        return Iterator(&(*root.end()));  
+        return Iterator(root.end());  
     }
 
     int  height();
@@ -121,7 +123,7 @@ class tree{
     void postorder();
     void insert(T_datatype element);
     void del(T_datatype element); // -pending
-    int  find(T_datatype element); // returns position in container (-1 if otherwise)
+    Iterator find(T_datatype element); // returns position in container (-1 if otherwise)
     void children(T_datatype element); // makes more sense , a user would enter element directly to find its children
     
  
