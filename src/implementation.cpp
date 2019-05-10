@@ -12,12 +12,14 @@ using namespace std;
 template<typename T_datatype, typename T_predicate>
 tree<T_datatype, T_predicate>::tree():root(nullptr){
 	root=nullptr;
+	size=0;
 	cout << "Default constructor\n";
 }
 
 template<typename T_datatype, typename T_predicate>
 tree<T_datatype, T_predicate>::tree(node<T_datatype>* param):root(param){
 	root=param;
+	size=1;
 	cout << "Parameterized constructor\n";
 }
 
@@ -27,6 +29,7 @@ tree<T_datatype, T_predicate>::tree(T_datatype val){
 	root->value=val;
 	root->left=nullptr;
 	root->right=nullptr;
+	size=1;
 	cout << "Parameterized constructor\n";	
 }
 
@@ -49,6 +52,7 @@ template<typename T_datatype, typename T_predicate>
 tree<T_datatype, T_predicate>::~tree(){
 	cout << "Destructor\n";
 	delete_tree_(root);
+	size=0;
 }
 
 template<typename T_datatype, typename T_predicate>
@@ -100,6 +104,7 @@ void tree<T_datatype, T_predicate>::insert(T_datatype element){
 	node<T_datatype>* iter=root, *prev=nullptr;
 	if(root==nullptr){
 		root=ele;
+		size++;
 		return;
 	}
 	while(true){
@@ -122,4 +127,5 @@ void tree<T_datatype, T_predicate>::insert(T_datatype element){
 				iter=iter->right;
 		}
 	}
+	size++;
 }
