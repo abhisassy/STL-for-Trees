@@ -53,6 +53,7 @@ class tree{
 		int height_(node<T_datatype>* ptr);
 		int  num_leaves_(node<T_datatype>* ptr);
 	    int  num_nodes_(node<T_datatype>* ptr); 
+	    node<T_datatype>* find_(T_datatype element);
 	    //all recursive functions have a private and a public declaration. 
 	    //Cuz we need to pass a parameter but the public ones can't expect the user to pass root cuz the user doesnt have access to it
 	public:
@@ -239,18 +240,18 @@ class tree{
 	    	return reverse_iterator(--(begin()));
 	    }
 
-	    int   height();
-	    int   num_leaves();
-	    int   num_nodes(); //interior or all?  -- all nodes 
-	    
-	    void  insert (T_datatype element);
-	    bool  erase  (T_datatype element); 
-	    bool  find   (T_datatype element);
-		
-	    const T_datatype*  parent(T_datatype element);
-	    const T_datatype*  left  (T_datatype element);
-	    const T_datatype*  right (T_datatype element);
-	    node<T_datatype>*  find_ (T_datatype element);	    //we need to add a lot more functions like the ones offered by vector and all(whatever applies)
+		int height();
+	    int num_leaves();
+	    int num_nodes(); //interior or all?  -- all nodes 
+
+	    void insert(T_datatype element);
+	    bool erase(T_datatype element); 
+	    bool find(T_datatype element);
+
+	    const T_datatype* parent(T_datatype element);
+	    const T_datatype* left(T_datatype element);
+	    const T_datatype* right(T_datatype element);
+	    //we need to add a lot more functions like the ones offered by vector and all(whatever applies)
 	    //we also need to implement reverse iterator --thats what I'll start with tomo
 	    //we need to see if we should make this iterator random access
 	    //we need to expose types and iterator traits (or try to. I'm sure he'll appreciate that)

@@ -23,6 +23,12 @@ int main(){
 		cout << *it << endl;
 	}
 
+	if(find(a.begin(),a.end(),6)!=a.end()){
+		cout << "Found\n";
+	}
+	else 
+		cout << "Not found\n";
+
 	cout << "preorder\n";
 	tree<int,less<int>>::iterator it1;
 	for(it1=a.begin_preorder();it1!=a.end_preorder();++it1){
@@ -55,8 +61,8 @@ int main(){
 
 	cout<<"erase\n";
 	cout << a.erase(5);
-	tree<int,less<int>>::Iterator it4;
-	for(it4=a.begin(_pre_);it4!=a.end(_pre_);++it4){
+	tree<int,less<int>>::iterator it4;
+	for(it4=a.begin();it4!=a.end();++it4){
 		cout <<*it4 << endl;
 	}
 
@@ -87,3 +93,26 @@ int main(){
 	// 	cout << *x << endl;
 	// }
 }
+
+
+//find needs to be implemented STL like(returning iterators) and more efficient than a linear search
+
+/*
+FROM VECTORS LIBRARY:
+operator=
+at
+front
+const iterator
+empty
+size
+clear
+operator==, !=, <= (if makes sense)
+
+FROM SETS LIBRARY:
+extract(maybe)
+key_comp
+merge(maybe)
+swap(maybe)
+contains
+
+*/

@@ -26,9 +26,9 @@ tree<T_datatype, T_predicate>::tree(node<T_datatype>* param):root(param){
 template<typename T_datatype, typename T_predicate>
 tree<T_datatype, T_predicate>::tree(T_datatype val){
 	root=new node<T_datatype>;
-	root->value  = val;
-	root->left   = nullptr;
-	root->right  = nullptr;
+	root->value=val;
+	root->left=nullptr;
+	root->right=nullptr;
 	root->parent = nullptr;
 	size=1;
 	cout << "Parameterized constructor\n";	
@@ -98,9 +98,9 @@ int tree<T_datatype, T_predicate>::num_nodes(){
 template<typename T_datatype, typename T_predicate>
 void tree<T_datatype, T_predicate>::insert(T_datatype element){
 	node<T_datatype>* ele=new node<T_datatype>;
-	ele->value  = element;
-	ele->left   = nullptr;
-	ele->right  = nullptr;
+	ele->value=element;
+	ele->left=nullptr;
+	ele->right=nullptr;
 	ele->parent = nullptr;
 	T_predicate fn = T_predicate();
 	node<T_datatype>* iter=root, *prev=nullptr;
@@ -119,21 +119,22 @@ void tree<T_datatype, T_predicate>::insert(T_datatype element){
 			else
 				iter=iter->left;
 		}
-		else{
+		else if(fn(iter->value,element)){
 			if(iter->right==nullptr){
 				iter->right=ele;
 				ele->parent=iter;
 				break;
 			}
-			else if(iter->right->value==element || iter->value==element)
-				break;
 			else
 				iter=iter->right;
+		}
+		else{
+			size--;
+			break;
 		}
 	}
 	size++;
 }
-
 
 template<typename T_datatype, typename T_predicate>
 bool tree<T_datatype, T_predicate>::find(T_datatype element){
