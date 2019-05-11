@@ -34,7 +34,33 @@ int main(){
 	for(it2=a.begin_postorder();it2!=a.end_postorder();++it2){
 		cout << *it2 << endl;
 	}
+	cout<<"find\n";
+	cout << a.find(0)<<endl;
+	cout << a.find(3)<<endl;
 
+	cout<<"children\n";
+	const int* lchild = a.left(3);
+	const int* rchild = a.right(5);
+	if(lchild!=nullptr)
+		cout <<*lchild <<endl;
+	if(rchild!=nullptr)
+		cout<<*rchild<<endl;
+
+	cout<<"parent\n";
+	const int* parent= a.parent(6);
+	if(parent!=nullptr)
+		cout<< *parent<<endl;
+
+
+
+	cout<<"erase\n";
+	cout << a.erase(5);
+	tree<int,less<int>>::Iterator it4;
+	for(it4=a.begin(_pre_);it4!=a.end(_pre_);++it4){
+		cout <<*it4 << endl;
+	}
+
+	cout<<endl;
 	cout << "reverse_iterator\n";
 	tree<int,less<int>>::reverse_iterator rt;
 	for(rt=a.rbegin();rt!=a.rend();++rt){
