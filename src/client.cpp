@@ -18,21 +18,46 @@ int main(){
 	cout << a.num_leaves() << " :num_leaves\n";
 	cout << a.num_nodes() << " :num_nodes\n";
 	cout << "inorder\n";
-	tree<int,less<int>>::Iterator it;
-	for(it=a.begin(_inorder_);it!=a.end(_inorder_);++it){
+	tree<int,less<int>>::iterator it;
+	for(it=a.begin();it!=a.end();++it){
 		cout << *it << endl;
 	}
-	// ukw isnt it better to have one .begin and .end ; and send parameter for which order of traversal
-	// thats more at par with other stl libraries
+
 	cout << "preorder\n";
-	tree<int,less<int>>::Iterator it1;
-	for(it1=a.begin(_pre_);it1!=a.end(_pre_);++it1){
+	tree<int,less<int>>::iterator it1;
+	for(it1=a.begin_preorder();it1!=a.end_preorder();++it1){
 		cout << *it1 << endl;
 	}
 
 	cout << "postorder\n";
-	tree<int,less<int>>::Iterator it2;
-	for(it2=a.begin(_post_);it2!=a.end(_post_);++it2){
+	tree<int,less<int>>::iterator it2;
+	for(it2=a.begin_postorder();it2!=a.end_postorder();++it2){
 		cout << *it2 << endl;
 	}
+
+	cout << "reverse_iterator\n";
+	tree<int,less<int>>::reverse_iterator rt;
+	for(rt=a.rbegin();rt!=a.rend();++rt){
+		cout << *rt << endl;
+	}
+
+	cout << typeid(std::iterator_traits<tree<int,less<int>>::iterator>::value_type).name() << endl;
+	// typename tree<int,less<int>>::value_type abc=5;
+	// cout << typeid(abc).name() << endl;
+	// cout << abc << endl;
+
+	// vector<int> abc;
+	// abc.push_back(1);
+	// abc.push_back(2);
+	// abc.push_back(3);
+	// abc.push_back(4);
+	// abc.push_back(5);
+	// vector<int>::reverse_iterator x=abc.rbegin();
+	// ++x;
+	// ++x;
+	// --x;
+	// cout << *x <<"hi";
+	// for(x=abc.rbegin();x!=abc.rend();++x){
+	// 	cout << *x << endl;
+	// }
 }

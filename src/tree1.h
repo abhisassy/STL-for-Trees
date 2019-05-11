@@ -10,13 +10,6 @@ using namespace std;
 #include <string.h>
 #include <typeinfo>
 
-// using these as paramters to begin and end ; using a single generic Iterator now 
-#define _pre_     1
-#define _inorder_ 2
-#define _post_    3
-
-
-
 template<typename T_datatype>
 struct node{
 	T_datatype value;
@@ -25,24 +18,51 @@ struct node{
 };
 
 
+//current iterator essentially stores the required traversal in a vector and iterates through that.
+//It was damn hard cuz it threw random errors. So I got this to work. Might not be the most efficient
+
+//not used by current iterator
+/*template<typename type>      
+bool isequal(type p1, type p2){   // two specializations needed only right ? for string and char*
+    return p1==p2;
+}
+
+template<>
+bool isequal(string p1, string p2){
+    if(p1.compare(p2))  // returns 0 if same 
+        return false;
+    else
+        return true;
+}
+template<>
+bool isequal(char* p1, char* p2){
+    if(strcmp(p1,p2))  // returns 0 if same 
+        return false;
+    else
+        return true;
+}*/
+
+
 template<typename T_datatype, typename T_predicate=less<T_datatype>>
 class tree{
 	private:
 		node<T_datatype>* root;
-		int  size;
-		void delete_tree_ (node<T_datatype>* root);
-		int  height_      (node<T_datatype>* ptr);
-		int  num_leaves_  (node<T_datatype>* ptr);
-	    int  num_nodes_   (node<T_datatype>* ptr); 
+		int size;
+		void delete_tree_(node<T_datatype>* root);
+		int height_(node<T_datatype>* ptr);
+		int  num_leaves_(node<T_datatype>* ptr);
+	    int  num_nodes_(node<T_datatype>* ptr); 
 	    //all recursive functions have a private and a public declaration. 
 	    //Cuz we need to pass a parameter but the public ones can't expect the user to pass root cuz the user doesnt have access to it
 	public:
+		using value_type = T_datatype;
+		
 		tree();
 		tree(node<T_datatype>*);
 		tree(T_datatype val);
 		~tree();
 
-		class Iterator{
+		class iterator{
 
 			private:
 				vector<T_datatype> v;
@@ -72,47 +92,36 @@ class tree{
 				}	
 
 			public:
-				Iterator(){
+				using value_type = T_datatype;
+				using iterator_category = bidirectional_iterator_tag;
+				using pointer = void;
+				using reference = void;
+				using difference_type = void;
+
+				iterator(){
 					index_v = 0;
 				}
 				// variable parameter constructor 
-				Iterator(node<T_datatype>*ptr, int param =1 , bool end =false){
-
-					try{
-						if(param == 1)
-							preorder_(v,ptr);
-						else if(param == 2)
-							inorder_(v,ptr);
-						else if(param == 3)
-							postorder_(v,ptr);
-						else{
-							throw 0 ;
-						}
-
-					}	
-					catch(int error_no){
-						if(error_no == 0){
-							cout <<"Recheck parameter passed to 'param' field of Iterator\n";
-							cout <<"Legal values : _pre_ , _post_, _inorder_\n";
-						}
-						exit(0);
-					}
+				iterator(node<T_datatype>*ptr, int param =1 , int index=0){
+					if(param == 1)
+						preorder_(v,ptr);
+					else if(param == 2)
+						inorder_(v,ptr);
+					else if(param == 3)
+						postorder_(v,ptr);
 
 					if(v.size()>0){
-						if(end)
-							index_v = v.size();
-						else
-							index_v= 0;
+							index_v = index;
 					}
 					else
 						index_v = -1;
 				}
 
-				bool operator==(const Iterator& rhs) const{   
+				bool operator==(const iterator& rhs) const{   
 		            return index_v==rhs.index_v;
 		        }
 
-		        bool operator!=(const Iterator& rhs) const{
+		        bool operator!=(const iterator& rhs) const{
 		            return !(*this==rhs);
 		        }
 
@@ -120,47 +129,125 @@ class tree{
 		            return v[index_v]; //want to return the node or the value of the node? // again val is much safer
 		        }
 
-		        Iterator operator++(int){    // postfix ++ // edit : parameter has to be int always 
-		            Iterator temp(*this);
+		        iterator operator++(int){    // postfix ++ // edit : parameter has to be int always 
+		            iterator temp(*this);
 		            ++*this;
 		            return temp;
 		        }
 
-		        Iterator operator++(){ 
+		        iterator operator++(){ 
 		            ++index_v;
 		            return *this;
 		        }
 
-		        Iterator operator--(int){    // postfix -- 
-		            Iterator temp(*this);
+		        iterator operator--(int){    // postfix -- 
+		            iterator temp(*this);
 		            --*this;
 		            return temp;
 		        }
 
-		        Iterator operator--(){ 
+		        iterator operator--(){ 
 		            --index_v;
 		            return *this;
 		        }
 		};
-		// set what type of order you want here , by def preorder
-		Iterator begin(int order = 1){
-   			return Iterator(root,order);  
-   		}
-		Iterator end(int order = 1){
-	    	return Iterator(root,order,true);
-		}	        
 
-		
-		
-		
-		int   height();
-		int   num_leaves();
-	    int   num_nodes(); //interior or all?  -- all nodes 
+		class reverse_iterator{
+			private:
+				iterator itr;
+			public:
+				using value_type = T_datatype;
+				using iterator_category = bidirectional_iterator_tag;
+				using pointer = void;
+				using reference = void;
+				using difference_type = void;
+				reverse_iterator(iterator x){
+					itr=x;
+				}
 
-	    void  insert   (T_datatype element);
-	    void  erase    (T_datatype element); // -pending
-	    int   find     (T_datatype element); // make this find use tree (bst like ordering) but it should also return iterators like normal find
-	    void  children (T_datatype element); // makes more sense , a user would enter element directly to find its children
+				reverse_iterator(){
+					itr=nullptr;
+				}
+
+		        bool operator==(const reverse_iterator& rhs) const{
+		            return itr==rhs.itr;
+		        }
+
+		        bool operator!=(const reverse_iterator& rhs) const{
+		            return !(*this==rhs);
+		        }
+
+		        T_datatype operator*() const{
+		            return *itr; //want to return the node or the value of the node?
+		        }
+
+		        reverse_iterator operator++(int){    // postfix ++ // edit : parameter has to be int always 
+		            reverse_iterator temp(*this);
+		            ++*this;
+		            return temp;
+		        }
+
+		        reverse_iterator operator++(){ 
+		            --itr;
+		            return *this;
+		        }
+
+		        reverse_iterator operator--(int){    // postfix -- 
+		            reverse_iterator temp(*this);
+		            --*this;
+		            return temp;
+		        }
+
+		        reverse_iterator operator--(){ 
+		            ++itr;
+		            return *this;
+		        }
+
+		        friend class tree;
+		};
+
+		iterator begin(){
+        	return iterator(root,2,0);  
+	    }
+
+	    iterator end(){
+	    	return iterator(root,2,size);
+	    }
+
+	    iterator begin_preorder(){
+        	return iterator(root,1,0);  
+	    }
+
+	    iterator end_preorder(){
+	    	return iterator(root,1,size);
+	    }
+
+	    iterator begin_postorder(){
+        	return iterator(root,3,0);  
+	    }
+
+	    iterator end_postorder(){
+	    	return iterator(root,3,size);
+	    }
+
+	    reverse_iterator rbegin(){
+	    	return reverse_iterator(--(end()));
+	    }
+
+	    reverse_iterator rend(){
+	    	return reverse_iterator(--(begin()));
+	    }
+
+		int height();
+		int  num_leaves();
+	    int  num_nodes(); //interior or all?  -- all nodes 
+	    // void inorder();
+	    // void preorder();
+	    // void postorder(); //implemented as iterators so no point of these?
+	    void insert(T_datatype element);
+	    void erase(T_datatype element); // -pending
+	    iterator find(T_datatype element); // make this find use tree (bst like ordering) but it should also return iterators like normal find
+	    void children(T_datatype element); // makes more sense , a user would enter element directly to find its children
 	    //we need to add a lot more functions like the ones offered by vector and all(whatever applies)
 	    //we also need to implement reverse iterator --thats what I'll start with tomo
 	    //we need to see if we should make this iterator random access
