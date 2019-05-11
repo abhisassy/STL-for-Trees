@@ -15,6 +15,7 @@ struct node{
 	T_datatype value;
 	node<T_datatype>* left;
 	node<T_datatype>* right;
+	node<T_datatype>* parent;
 };
 
 
@@ -238,17 +239,18 @@ class tree{
 	    	return reverse_iterator(--(begin()));
 	    }
 
-		int height();
-		int  num_leaves();
-	    int  num_nodes(); //interior or all?  -- all nodes 
-	    // void inorder();
-	    // void preorder();
-	    // void postorder(); //implemented as iterators so no point of these?
-	    void insert(T_datatype element);
-	    void erase(T_datatype element); // -pending
-	    iterator find(T_datatype element); // make this find use tree (bst like ordering) but it should also return iterators like normal find
-	    void children(T_datatype element); // makes more sense , a user would enter element directly to find its children
-	    //we need to add a lot more functions like the ones offered by vector and all(whatever applies)
+	    int   height();
+	    int   num_leaves();
+	    int   num_nodes(); //interior or all?  -- all nodes 
+	    
+	    void  insert (T_datatype element);
+	    bool  erase  (T_datatype element); 
+	    bool  find   (T_datatype element);
+		
+	    const T_datatype*  parent(T_datatype element);
+	    const T_datatype*  left  (T_datatype element);
+	    const T_datatype*  right (T_datatype element);
+	    node<T_datatype>*  find_ (T_datatype element);	    //we need to add a lot more functions like the ones offered by vector and all(whatever applies)
 	    //we also need to implement reverse iterator --thats what I'll start with tomo
 	    //we need to see if we should make this iterator random access
 	    //we need to expose types and iterator traits (or try to. I'm sure he'll appreciate that)
