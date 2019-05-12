@@ -100,7 +100,7 @@ class tree{
 					index_v = 0;
 				}
 				// variable parameter constructor 
-				iterator(node<T_datatype>*ptr, int param =1 , bool end =false){
+				iterator(node<T_datatype>*ptr, int param =2 , bool end =false){
 					if(v.size()!=0){
 							if(end)
 								index_v = v.size();
@@ -186,10 +186,10 @@ class tree{
 
 		};
 		// set what type of order you want here , by def preorder
-		iterator begin(int order = 1){
+		iterator begin(int order = 2){
    			return iterator(root,order);  
    		}
-		iterator end(int order = 1){
+		iterator end(int order = 2){
 	    	return iterator(root,order,true);
 		}	        
 
