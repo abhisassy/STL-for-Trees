@@ -10,6 +10,22 @@ using namespace std;
 #include <string.h>
 #include <typeinfo>
 
+// using these as paramters to begin and end ; using a single generic iterator now 
+#define _pre_     1
+#define _inorder_ 2
+#define _post_    3
+
+template<typename T_ptr>
+void disp(T_ptr first, T_ptr last){
+	while(first!=last){
+		cout << *first<<" ";
+		++first;
+	}
+	cout <<"\n";
+}
+
+
+
 template<typename T_datatype>
 struct node{
 	T_datatype value;
@@ -19,46 +35,25 @@ struct node{
 };
 
 
-//current iterator essentially stores the required traversal in a vector and iterates through that.
-//It was damn hard cuz it threw random errors. So I got this to work. Might not be the most efficient
-
-//not used by current iterator
-/*template<typename type>      
-bool isequal(type p1, type p2){   // two specializations needed only right ? for string and char*
-    return p1==p2;
-}
-
-template<>
-bool isequal(string p1, string p2){
-    if(p1.compare(p2))  // returns 0 if same 
-        return false;
-    else
-        return true;
-}
-template<>
-bool isequal(char* p1, char* p2){
-    if(strcmp(p1,p2))  // returns 0 if same 
-        return false;
-    else
-        return true;
-}*/
-
-
 template<typename T_datatype, typename T_predicate=less<T_datatype>>
 class tree{
 	private:
 		node<T_datatype>* root;
-		int size_of_tree;
-		void delete_tree_(node<T_datatype>*& root);
-		int height_(node<T_datatype>* ptr);
-		int  num_leaves_(node<T_datatype>* ptr);
-	    int  num_nodes_(node<T_datatype>* ptr); 
-	    node<T_datatype>* find_(T_datatype element);
+		int  size_of_tree;
+		void delete_tree_ (node<T_datatype>* root);
+		int  height_      (node<T_datatype>* ptr);
+		int  num_leaves_  (node<T_datatype>* ptr);
+	    int  num_nodes_   (node<T_datatype>* ptr); 
+
+		node<T_datatype>*  find_ (T_datatype element);
+
 	    //all recursive functions have a private and a public declaration. 
 	    //Cuz we need to pass a parameter but the public ones can't expect the user to pass root cuz the user doesnt have access to it
 	public:
-		using value_type = T_datatype;
 		
+		using value_type  = T_datatype;
+		using key_compare = T_predicate;
+
 		tree();
 		tree(node<T_datatype>*);
 		tree(T_datatype val);
@@ -68,7 +63,7 @@ class tree{
 
 			private:
 				vector<T_datatype> v;
-				int index_v;  // your p 
+				int index_v;   
 				void inorder_(vector<T_datatype>& v, node<T_datatype>* subtree){
 					if(subtree!=nullptr){
 						inorder_(v,subtree->left);
@@ -94,26 +89,50 @@ class tree{
 				}	
 
 			public:
-				using value_type = T_datatype;
-				using iterator_category = bidirectional_iterator_tag;
-				using pointer = void;
-				using reference = void;
-				using difference_type = void;
 
+				using value_type        = T_datatype;
+				using iterator_category = random_access_iterator_tag;
+				using pointer           = void;
+				using reference         = void;
+				using difference_type   = void;
+				
 				iterator(){
 					index_v = 0;
 				}
 				// variable parameter constructor 
-				iterator(node<T_datatype>*ptr, int param =1 , int index=0){
-					if(param == 1)
-						preorder_(v,ptr);
-					else if(param == 2)
-						inorder_(v,ptr);
-					else if(param == 3)
-						postorder_(v,ptr);
+				iterator(node<T_datatype>*ptr, int param =1 , bool end =false){
+					if(v.size()!=0){
+							if(end)
+								index_v = v.size();
+							else
+								index_v= 0;
+							return;
+					}
+					try{
+						if(param == 1)
+							preorder_(v,ptr);
+						else if(param == 2)
+							inorder_(v,ptr);
+						else if(param == 3)
+							postorder_(v,ptr);
+						else{
+							throw 0 ;
+						}
+
+					}	
+					catch(int error_no){
+						if(error_no == 0){
+							cout <<"Recheck parameter passed to 'param' field of iterator\n";
+							cout <<"Legal values : _pre_ , _post_, _inorder_\n";
+						}
+						exit(0);
+					}
 
 					if(v.size()>0){
-							index_v = index;
+						if(end)
+							index_v = v.size();
+						else
+							index_v= 0;
 					}
 					else
 						index_v = -1;
@@ -152,17 +171,39 @@ class tree{
 		            --index_v;
 		            return *this;
 		        }
+
+				const T_datatype& operator[](int index) const{  // only rvalue usage
+					try{
+						if(index>=v.size())
+							throw 0;
+						return v[index];
+					}
+					catch(int error_no){
+						cout <<"Index Out of Bounds. Execution Halted\n";
+						exit(0);
+					}	
+				}
+
 		};
+		// set what type of order you want here , by def preorder
+		iterator begin(int order = 1){
+   			return iterator(root,order);  
+   		}
+		iterator end(int order = 1){
+	    	return iterator(root,order,true);
+		}	        
 
 		class reverse_iterator{
+			
 			private:
 				iterator itr;
 			public:
-				using value_type = T_datatype;
+				using value_type        = T_datatype;
 				using iterator_category = bidirectional_iterator_tag;
-				using pointer = void;
-				using reference = void;
-				using difference_type = void;
+				using pointer           = void;
+				using reference         = void;
+				using difference_type   = void;
+			
 				reverse_iterator(iterator x){
 					itr=x;
 				}
@@ -171,7 +212,7 @@ class tree{
 					itr=nullptr;
 				}
 
-		        bool operator==(const reverse_iterator& rhs) const{
+				bool operator==(const reverse_iterator& rhs) const{
 		            return itr==rhs.itr;
 		        }
 
@@ -180,10 +221,10 @@ class tree{
 		        }
 
 		        T_datatype operator*() const{
-		            return *itr; //want to return the node or the value of the node?
+		            return *itr; 
 		        }
 
-		        reverse_iterator operator++(int){    // postfix ++ // edit : parameter has to be int always 
+		        reverse_iterator operator++(int){   
 		            reverse_iterator temp(*this);
 		            ++*this;
 		            return temp;
@@ -194,7 +235,7 @@ class tree{
 		            return *this;
 		        }
 
-		        reverse_iterator operator--(int){    // postfix -- 
+		        reverse_iterator operator--(int){    
 		            reverse_iterator temp(*this);
 		            --*this;
 		            return temp;
@@ -204,56 +245,45 @@ class tree{
 		            ++itr;
 		            return *this;
 		        }
-
-		        friend class tree;
+				
+		        
 		};
 
-		iterator begin(){
-        	return iterator(root,2,0);  
+		reverse_iterator rbegin(int order = 1){
+	    	return reverse_iterator(--(end(order)));
+	   	}
+
+	    reverse_iterator rend(int order = 1){
+	    	return reverse_iterator(--(begin(order)));
 	    }
 
-	    iterator end(){
-	    	return iterator(root,2,size_of_tree);
-	    }
+		
+		
+		
+		int   height();
+		int   num_leaves();
+	    int   num_nodes(); //interior or all?  -- all nodes 
+	    
+		bool  insert (T_datatype element);
+	    bool  erase  (T_datatype element); 
+	    bool  find   (T_datatype element);
+		
+		const T_datatype*  parent(T_datatype element);
+		const T_datatype*  left  (T_datatype element);
+		const T_datatype*  right (T_datatype element);
+		
 
-	    iterator begin_preorder(){
-        	return iterator(root,1,0);  
-	    }
+		bool   empty() const;
+	    size_t size ()  const;
+	    void   clear();
 
-	    iterator end_preorder(){
-	    	return iterator(root,1,size_of_tree);
-	    }
-
-	    iterator begin_postorder(){
-        	return iterator(root,3,0);  
-	    }
-
-	    iterator end_postorder(){
-	    	return iterator(root,3,size_of_tree);
-	    }
-
-	    reverse_iterator rbegin(){
-	    	return reverse_iterator(--(end()));
-	    }
-
-	    reverse_iterator rend(){
-	    	return reverse_iterator(--(begin()));
-	    }
-
-		int height();
-	    int num_leaves();
-	    int num_nodes(); //interior or all?  -- all nodes 
-
-	    void insert(T_datatype element);
-	    bool erase(T_datatype element); 
-	    bool find(T_datatype element);
-
-	    const T_datatype* parent(T_datatype element);
-	    const T_datatype* left(T_datatype element);
-	    const T_datatype* right(T_datatype element);
-	    bool empty() const;
-	    size_t size() const;
-	    void clear();
+		T_datatype  front();
+		T_predicate key_comp();
+		
+		void merge(tree<T_datatype,T_predicate>& rhs);
+		void swap (tree<T_datatype,T_predicate>& rhs);
+		
+		tree<T_datatype,T_predicate> extract(T_datatype element);
 
 	    template<typename T_data, typename T_pred>
 	    friend bool operator==(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
@@ -272,7 +302,8 @@ class tree{
 
 	    template<typename T_data, typename T_pred>
 	    friend bool operator<(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
-	    //we need to add a lot more functions like the ones offered by vector and all(whatever applies)
+				
+		//we need to add a lot more functions like the ones offered by vector and all(whatever applies)
 	    //we also need to implement reverse iterator --thats what I'll start with tomo
 	    //we need to see if we should make this iterator random access
 	    //we need to expose types and iterator traits (or try to. I'm sure he'll appreciate that)
