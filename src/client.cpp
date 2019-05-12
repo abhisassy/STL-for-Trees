@@ -12,8 +12,20 @@ using namespace std;
 int main(){
 	tree<int,less<int>> a(5); //if predicate is true for (val,key) then val is in the left subtree of key
 	a.insert(3);
-	a.insert(7);
+	a.insert(8);
 	a.insert(6);
+	tree<int,less<int>> a1(5); //if predicate is true for (val,key) then val is in the left subtree of key
+	a1.insert(3);
+	a1.insert(7);
+	a1.insert(6);
+	cout << boolalpha;
+	cout << "Equality: " << (a==a1) << endl;
+	cout << "Inequality: " << (a!=a1) << endl;
+	cout << "Lesser than or equal to: " << (a<=a1) << endl;
+	cout << "Greater than or equal to: " << (a>=a1) << endl;
+	cout << "Greater than: " << (a>a1) << endl;
+	cout << "Lesser than: " << (a<a1) << endl;
+	cout << "\n\n";
 	cout << a.height() << " :Height\n";
 	cout << a.num_leaves() << " :num_leaves\n";
 	cout << a.num_nodes() << " :num_nodes\n";
@@ -73,7 +85,27 @@ int main(){
 		cout << *rt << endl;
 	}
 
-	cout << typeid(std::iterator_traits<tree<int,less<int>>::iterator>::value_type).name() << endl;
+	//cout << typeid(std::iterator_traits<tree<int,less<int>>::iterator>::value_type).name() << endl;
+
+	cout << "size\n";
+	cout << boolalpha;
+	cout << a.size() << endl;
+
+	cout << "empty\n";
+	cout << a.empty() << endl;
+	cout << "cleared\n";
+	a.clear();
+	cout << "size\n";
+	cout << boolalpha;
+	cout << a.size() << endl;
+
+	cout << "empty\n";
+	cout << a.empty() << endl;
+	a.insert(8);
+	a.insert(9);
+	a.insert(10);
+	a.insert(6);
+	a.insert(7);
 	// typename tree<int,less<int>>::value_type abc=5;
 	// cout << typeid(abc).name() << endl;
 	// cout << abc << endl;
@@ -103,10 +135,10 @@ operator=
 at
 front
 const iterator
-empty
-size
-clear
-operator==, !=, <= (if makes sense)
+empty		done
+size		done
+clear		done
+operator==, !=, <= (if makes sense)		done
 
 FROM SETS LIBRARY:
 extract(maybe)

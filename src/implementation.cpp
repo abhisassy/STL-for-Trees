@@ -12,14 +12,14 @@ using namespace std;
 template<typename T_datatype, typename T_predicate>
 tree<T_datatype, T_predicate>::tree():root(nullptr){
 	root=nullptr;
-	size=0;
+	size_of_tree=0;
 	cout << "Default constructor\n";
 }
 
 template<typename T_datatype, typename T_predicate>
 tree<T_datatype, T_predicate>::tree(node<T_datatype>* param):root(param){
 	root=param;
-	size=1;
+	size_of_tree=1;
 	cout << "Parameterized constructor\n";
 }
 
@@ -30,14 +30,14 @@ tree<T_datatype, T_predicate>::tree(T_datatype val){
 	root->left=nullptr;
 	root->right=nullptr;
 	root->parent = nullptr;
-	size=1;
+	size_of_tree=1;
 	cout << "Parameterized constructor\n";	
 }
 
 template<typename T_datatype, typename T_predicate>
-void tree<T_datatype, T_predicate>::delete_tree_(node<T_datatype>* root){
+void tree<T_datatype, T_predicate>::delete_tree_(node<T_datatype>*& root){
 	if(root!=nullptr)
-    {
+    {	
         delete_tree_(root->left);
         delete_tree_(root->right);
         if(root->left!=nullptr)
@@ -53,7 +53,7 @@ template<typename T_datatype, typename T_predicate>
 tree<T_datatype, T_predicate>::~tree(){
 	cout << "Destructor\n";
 	delete_tree_(root);
-	size=0;
+	size_of_tree=0;
 }
 
 template<typename T_datatype, typename T_predicate>
@@ -106,7 +106,7 @@ void tree<T_datatype, T_predicate>::insert(T_datatype element){
 	node<T_datatype>* iter=root, *prev=nullptr;
 	if(root==nullptr){
 		root=ele;
-		size++;
+		size_of_tree++;
 		return;
 	}
 	while(true){
@@ -129,11 +129,11 @@ void tree<T_datatype, T_predicate>::insert(T_datatype element){
 				iter=iter->right;
 		}
 		else{
-			size--;
+			size_of_tree--;
 			break;
 		}
 	}
-	size++;
+	size_of_tree++;
 }
 
 template<typename T_datatype, typename T_predicate>
@@ -267,6 +267,83 @@ bool tree<T_datatype, T_predicate>::erase(T_datatype element){
 		delete iter;
 		iter = nullptr;  
 	}
-	size--;
+	size_of_tree--;
 	return true;
+}
+
+template<typename T_datatype, typename T_predicate>
+bool tree<T_datatype, T_predicate>::empty() const{
+	if(root == nullptr && size_of_tree==0)
+		return true;
+	return false;
+}
+
+template<typename T_datatype, typename T_predicate>
+size_t tree<T_datatype, T_predicate>::size() const{
+	return size_of_tree;
+}
+
+template<typename T_datatype, typename T_predicate>
+void tree<T_datatype, T_predicate>::clear(){
+	delete_tree_(root);
+	size_of_tree=0;
+}
+
+template<typename T_data, typename T_pred>
+bool operator==(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs){
+	if(lhs.size_of_tree==rhs.size_of_tree){
+		auto i=lhs.begin();
+		auto j=rhs.begin();
+		for(;i!=lhs.end()&&j!=rhs.end();++i,++j){
+			if(*i!=*j)
+				return false;
+		}
+		if(i==lhs.end() && j==rhs.end())
+			return true;
+		return false;
+	}
+	return false;
+}
+
+template<typename T_data, typename T_pred>
+bool operator!=(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs){
+	return !(lhs==rhs);
+}
+
+template<typename T_data, typename T_pred>
+bool operator<=(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs){
+	size_t s = lhs.size()<rhs.size()? lhs.size() : rhs.size();
+	auto i=lhs.begin();
+	auto j=rhs.begin();
+	for(size_t x=0;x<s;++i,++j,++x){
+		if(*i > *j)
+			return false;
+	}
+	if(lhs.size() <= rhs.size() )
+		return true;
+	return false;
+}
+
+template<typename T_data, typename T_pred>
+bool operator>=(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs){
+	size_t s = lhs.size()<rhs.size()? lhs.size() : rhs.size();
+	auto i=lhs.begin();
+	auto j=rhs.begin();
+	for(size_t x=0;x<s;++i,++j,++x){
+		if(*i < *j)
+			return false;
+	}
+	if(lhs.size() >= rhs.size() )
+		return true;
+	return false;
+}
+
+template<typename T_data, typename T_pred>
+bool operator>(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs){
+	return !(lhs<=rhs);
+}
+
+template<typename T_data, typename T_pred>
+bool operator<(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs){
+	return !(lhs>=rhs);
 }

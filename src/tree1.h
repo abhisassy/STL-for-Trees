@@ -48,8 +48,8 @@ template<typename T_datatype, typename T_predicate=less<T_datatype>>
 class tree{
 	private:
 		node<T_datatype>* root;
-		int size;
-		void delete_tree_(node<T_datatype>* root);
+		int size_of_tree;
+		void delete_tree_(node<T_datatype>*& root);
 		int height_(node<T_datatype>* ptr);
 		int  num_leaves_(node<T_datatype>* ptr);
 	    int  num_nodes_(node<T_datatype>* ptr); 
@@ -213,7 +213,7 @@ class tree{
 	    }
 
 	    iterator end(){
-	    	return iterator(root,2,size);
+	    	return iterator(root,2,size_of_tree);
 	    }
 
 	    iterator begin_preorder(){
@@ -221,7 +221,7 @@ class tree{
 	    }
 
 	    iterator end_preorder(){
-	    	return iterator(root,1,size);
+	    	return iterator(root,1,size_of_tree);
 	    }
 
 	    iterator begin_postorder(){
@@ -229,7 +229,7 @@ class tree{
 	    }
 
 	    iterator end_postorder(){
-	    	return iterator(root,3,size);
+	    	return iterator(root,3,size_of_tree);
 	    }
 
 	    reverse_iterator rbegin(){
@@ -251,6 +251,27 @@ class tree{
 	    const T_datatype* parent(T_datatype element);
 	    const T_datatype* left(T_datatype element);
 	    const T_datatype* right(T_datatype element);
+	    bool empty() const;
+	    size_t size() const;
+	    void clear();
+
+	    template<typename T_data, typename T_pred>
+	    friend bool operator==(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
+
+	    template<typename T_data, typename T_pred>
+	    friend bool operator!=(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
+
+	    template<typename T_data, typename T_pred>
+	    friend bool operator<=(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
+
+	    template<typename T_data, typename T_pred>
+	    friend bool operator>=(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
+
+	    template<typename T_data, typename T_pred>
+	    friend bool operator>(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
+
+	    template<typename T_data, typename T_pred>
+	    friend bool operator<(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
 	    //we need to add a lot more functions like the ones offered by vector and all(whatever applies)
 	    //we also need to implement reverse iterator --thats what I'll start with tomo
 	    //we need to see if we should make this iterator random access
