@@ -249,11 +249,11 @@ class tree{
 		        
 		};
 
-		reverse_iterator rbegin(int order = 1){
+		reverse_iterator rbegin(int order = 2){
 	    	return reverse_iterator(--(end(order)));
 	   	}
 
-	    reverse_iterator rend(int order = 1){
+	    reverse_iterator rend(int order = 2){
 	    	return reverse_iterator(--(begin(order)));
 	    }
 
@@ -264,9 +264,11 @@ class tree{
 		int   num_leaves();
 	    int   num_nodes(); //interior or all?  -- all nodes 
 	    
-		bool  insert (T_datatype element);
-	    bool  erase  (T_datatype element); 
-	    bool  find   (T_datatype element);
+		bool  contains (T_datatype element);
+		bool  insert   (T_datatype element);
+	    bool  erase    (T_datatype element); 
+	    
+		tree<T_datatype, T_predicate>::iterator find (T_datatype element);
 		
 		const T_datatype*  parent(T_datatype element);
 		const T_datatype*  left  (T_datatype element);

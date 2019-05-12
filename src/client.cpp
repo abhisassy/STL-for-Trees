@@ -10,6 +10,7 @@ using namespace std;
 #include "tree1.h"
 
 int main(){
+	cout << boolalpha;
 	tree<int,less<int>> a(5); //if predicate is true for (val,key) then val is in the left subtree of key
 	a.insert(3);
 	a.insert(7);
@@ -37,8 +38,12 @@ int main(){
 	}
 
 	cout<<"find\n";
-	cout << a.find(0)<<endl;
-	cout << a.find(3)<<endl;
+	tree<int,less<int>>::iterator res = a.find(5);
+	if(res!=nullptr)
+		cout << *res<<endl;
+	else
+		cout<<"not found\n";
+	cout <<a.contains(0)<<endl;
 
 	cout<<"children\n";
 	const int* lchild = a.left(3);
@@ -68,7 +73,7 @@ int main(){
 	a1.insert(3);
 	a1.insert(7);
 	a1.insert(6);
-	cout << boolalpha;
+	
 	cout << "Equality: " << (a==a1) << endl;
 	cout << "Inequality: " << (a!=a1) << endl;
 	cout << "Lesser than or equal to: " << (a<=a1) << endl;
@@ -82,10 +87,10 @@ int main(){
 	for(rt=a.rbegin();rt!=a.rend();++rt){
 		cout << *rt << endl;
 	}
-	rt= a.rbegin();
-	cout<<"here"<<rt[0]<<endl;
-	rt= a.begin();
-	cout<<"here"<<rt[0]<<endl;
+	//rt= a.rbegin();
+	//cout<<"here"<<rt[0]<<endl;
+	//rt= a.begin();
+	//cout<<"here"<<rt[0]<<endl;
 
 	cout << boolalpha;
 	cout << a.size() << endl;

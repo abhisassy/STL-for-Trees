@@ -136,9 +136,22 @@ bool tree<T_datatype, T_predicate>::insert(T_datatype element){
 	return true;
 }
 
+template<typename T_datatype, typename T_predicate>
+typename tree<T_datatype, T_predicate>::iterator tree<T_datatype, T_predicate>::find(T_datatype element){
+
+	tree<T_datatype, T_predicate>::iterator it = begin();
+	while(it!=end()){
+		if(*it == element)
+			return it;
+		++it;
+	}
+
+	return nullptr;
+
+}
 
 template<typename T_datatype, typename T_predicate>
-bool tree<T_datatype, T_predicate>::find(T_datatype element){
+bool tree<T_datatype, T_predicate>::contains(T_datatype element){
 
 	node<T_datatype>* iter = find_(element);
 	if(iter == nullptr)
