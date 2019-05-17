@@ -84,18 +84,6 @@ int tree<T_datatype, T_predicate>::num_leaves(){
 }
 
 template<typename T_datatype, typename T_predicate>
-int tree<T_datatype, T_predicate>::num_nodes_(node<T_datatype>* ptr){
-	if(ptr==nullptr)
-		return 0;
-	return 1+num_nodes_(ptr->left)+num_nodes_(ptr->right);
-}
-
-template<typename T_datatype, typename T_predicate>
-int tree<T_datatype, T_predicate>::num_nodes(){
-	return num_nodes_(root);
-}
-
-template<typename T_datatype, typename T_predicate>
 bool tree<T_datatype, T_predicate>::insert(T_datatype element){
 	node<T_datatype>* ele=new node<T_datatype>;
 	ele->value  = element;
@@ -270,7 +258,6 @@ bool tree<T_datatype, T_predicate>::erase(T_datatype element){
 		
 	}
 	else{
-		
 		node<T_datatype>* iter2 = iter;
 		iter = iter->right;
 		while(iter->left!=nullptr){
@@ -366,7 +353,7 @@ bool operator<(tree<T_datatype,T_predicate>& lhs, tree<T_datatype,T_predicate>& 
 
 
 template<typename T_datatype, typename T_predicate>
-T_datatype tree<T_datatype, T_predicate>::front(){
+T_datatype& tree<T_datatype, T_predicate>::front(){
 	return root->value;
 }
 
@@ -378,18 +365,12 @@ T_predicate tree<T_datatype, T_predicate>::key_comp(){
 }
 template<typename T_datatype, typename T_predicate>
 void tree<T_datatype, T_predicate>::swap(tree<T_datatype,T_predicate>& rhs){
-	
-	auto it1a = begin();   auto it1b = end();
-	auto it2a = rhs.begin();   auto it2b = rhs.end();
-
-	clear();
-	rhs.clear();
-
-	for(;it1a != it1b ;++it1a)
-		rhs.insert(*it1a);
-	
-	for(;it2a != it2b ;++it2a)
-		insert(*it2a);
+	node<T_datatype>* temp = root;
+	int temp_size = size_of_tree;
+	root = rhs.root;
+	size_of_tree = rhs.size_of_tree;
+	rhs.root = temp;
+	rhs.size_of_tree = temp_size;
 	
 	return;
 }
@@ -406,11 +387,11 @@ void tree<T_datatype, T_predicate>::merge(tree<T_datatype,T_predicate> &rhs){
 }
 
 template<typename T_datatype, typename T_predicate>
-tree<T_datatype,T_predicate> tree<T_datatype, T_predicate>::extract(T_datatype element){
+tree<T_datatype,T_predicate>& tree<T_datatype, T_predicate>::extract(T_datatype element){
 
 	erase(element);
-	tree<T_datatype,T_predicate> new_tree(element);
-	return new_tree;
+	tree<T_datatype,T_predicate> *new_tree = new tree<T_datatype,T_predicate>(element);
+	return *new_tree;
 
 }
 

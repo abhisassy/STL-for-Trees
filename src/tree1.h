@@ -11,9 +11,9 @@ using namespace std;
 #include <typeinfo>
 
 // using these as paramters to begin and end ; using a single generic iterator now 
-#define _pre_     1
+#define _preorder_     1
 #define _inorder_ 2
-#define _post_    3
+#define _postorder_    3
 
 template<typename T_ptr>
 void disp(T_ptr first, T_ptr last){
@@ -43,7 +43,6 @@ class tree{
 		void delete_tree_ (node<T_datatype>* root);
 		int  height_      (node<T_datatype>* ptr);
 		int  num_leaves_  (node<T_datatype>* ptr);
-	    int  num_nodes_   (node<T_datatype>* ptr); 
 
 		node<T_datatype>*  find_ (T_datatype element);
 
@@ -58,6 +57,10 @@ class tree{
 		tree(node<T_datatype>*);
 		tree(T_datatype val);
 		~tree();
+		tree(const tree<T_datatype, T_predicate>& rhs) = delete;
+		tree<T_datatype, T_predicate>& operator=(const tree<T_datatype, T_predicate>& rhs) = delete;
+		tree(tree<T_datatype, T_predicate>&& rhs) = delete;
+		tree<T_datatype, T_predicate>& operator=(tree<T_datatype, T_predicate>&& rhs) = delete;
 
 		class iterator{
 
@@ -195,7 +198,7 @@ class tree{
 				}
 
 		};
-		// set what type of order you want here , by def preorder
+		// set what type of order you want here , by def inorder
 		iterator begin(int order = 2){
    			return iterator(root,order);  
    		}
@@ -271,31 +274,30 @@ class tree{
 		
 		
 		int   height();
-		int   num_leaves();
-	    int   num_nodes(); //interior or all?  -- all nodes 
+		int   num_leaves();//interior or all?  -- all nodes 
 	    
-		bool  contains (T_datatype element);
-		bool  insert   (T_datatype element);
-	    bool  erase    (T_datatype element); 
+		bool  contains(T_datatype element);
+		bool  insert(T_datatype element);
+	    bool  erase(T_datatype element); 
 	    
-		tree<T_datatype, T_predicate>::iterator find (T_datatype element);
+		tree<T_datatype, T_predicate>::iterator find(T_datatype element);
 		
 		const T_datatype*  parent(T_datatype element);
-		const T_datatype*  left  (T_datatype element);
-		const T_datatype*  right (T_datatype element);
+		const T_datatype*  left(T_datatype element);
+		const T_datatype*  right(T_datatype element);
 		
 
 		bool   empty() const;
 	    size_t size ()  const;
 	    void   clear();
 
-		T_datatype  front();
+		T_datatype&  front();
 		T_predicate key_comp();
 		
 		void merge(tree<T_datatype,T_predicate>& rhs);
-		void swap (tree<T_datatype,T_predicate>& rhs);
+		void swap(tree<T_datatype,T_predicate>& rhs);
 		
-		tree<T_datatype,T_predicate> extract(T_datatype element);
+		tree<T_datatype,T_predicate>& extract(T_datatype element);
 
 	    template<typename T_data, typename T_pred>
 	    friend bool operator==(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
