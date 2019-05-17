@@ -155,6 +155,18 @@ int main(){
 	disp(y3.begin(),y3.end());
 
 
+	tree<int,less<int>>  random; random.insert(0);random.insert(2);random.insert(3); 
+	auto it_r = random.begin(_inorder_);
+	cout <<"\n\nRANDOM ACCESS\n";
+	cout <<*it_r ;
+	cout <<" testing " <<*(it_r +2)<<endl;
+	cout <<*it_r ;
+	it_r++;
+	auto it_2 = random.begin(_inorder_);
+	cout<<"\ntesting -\n";
+	cout<<it_r - it_2<<endl;
+
+	
 
 	//find needs to be implemented STL like(returning iterators) and more efficient than a linear search
 	// -- find runs faster than linear uses bsts property ; but no point in passing an iterator back 
@@ -174,7 +186,7 @@ extract(maybe)//done
 key_comp      // done
 merge(maybe)  // done
 swap(maybe)   // bad implementation --but done 
-contains      // same as find . need to implement ? multiple functions with same action is bad right ?
+contains      // done
 */
 
 

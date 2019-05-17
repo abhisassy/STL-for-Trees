@@ -48,7 +48,7 @@ class tree{
 		node<T_datatype>*  find_ (T_datatype element);
 
 	    //all recursive functions have a private and a public declaration. 
-	    //Cuz we need to pass a parameter but the public ones can't expect the user to pass root cuz the user doesnt have access to it
+	    //we need to pass a parameter but the public ones can't expect the user to pass root cuz the user doesnt have access to it
 	public:
 		
 		using value_type  = T_datatype;
@@ -147,7 +147,7 @@ class tree{
 		        }
 
 		        T_datatype operator*() const{
-		            return v[index_v]; //want to return the node or the value of the node? // again val is much safer
+		            return v[index_v]; 
 		        }
 
 		        iterator operator++(int){    // postfix ++ // edit : parameter has to be int always 
@@ -182,6 +182,16 @@ class tree{
 						cout <<"Index Out of Bounds. Execution Halted\n";
 						exit(0);
 					}	
+				}
+
+				iterator operator+(int n){
+					iterator temp = *this;
+					temp.index_v = index_v + n;
+					return temp;
+				}
+
+				int operator-(const iterator& it2){
+					return index_v - it2.index_v;
 				}
 
 		};
@@ -305,10 +315,6 @@ class tree{
 	    template<typename T_data, typename T_pred>
 	    friend bool operator<(tree<T_data,T_pred>& lhs, tree<T_data,T_pred>& rhs);
 				
-		//we need to add a lot more functions like the ones offered by vector and all(whatever applies)
-	    //we also need to implement reverse iterator --thats what I'll start with tomo
-	    //we need to see if we should make this iterator random access
-	    //we need to expose types and iterator traits (or try to. I'm sure he'll appreciate that)
 };
 
 #include "implementation.cpp"
